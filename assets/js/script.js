@@ -819,9 +819,9 @@
     if ($("#clock").length) {
         $('#clock').countdown('2022/11/25', function(event) {
             var $this = $(this).html(event.strftime(''
-            + '<div class="box"><div><div class="time">%m</div> <span>Month</span> </div></div>'
-            + '<div class="box"><div><div class="time">%D</div> <span>Days</span> </div></div>'
-            + '<div class="box"><div><div class="time">%H</div> <span>Hours</span> </div></div>'
+            + '<div class="box"><div><div class="time">%m</div> <span>Mois</span> </div></div>'
+            + '<div class="box"><div><div class="time">%D</div> <span>Jours</span> </div></div>'
+            + '<div class="box"><div><div class="time">%H</div> <span>Heures</span> </div></div>'
             + '<div class="box"><div><div class="time">%M</div> <span>Mins</span> </div></div>'
             + '<div class="box"><div><div class="time">%S</div> <span>Secs</span> </div></div>'));
         });
@@ -829,53 +829,7 @@
 
 
 
-    /*------------------------------------------
-        = TOUCHSPIN FOR PRODUCT SINGLE PAGE
-    -------------------------------------------*/
-    if ($("input[name='product-count']").length) {
-        $("input[name='product-count']").TouchSpin({
-            verticalbuttons: true
-        });
-    }
-
-
-    /*----------------------------
-        = SHOP PRICE SLIDER
-    ------------------------------ */
-    if($("#slider-range").length) {
-        $("#slider-range").slider({
-            range: true,
-            min: 12,
-            max: 200,
-            values: [0, 100],
-            slide: function(event, ui) {
-                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
-            }
-        });
-
-        $("#amount").val("$" + $("#slider-range").slider("values", 0) + " - $" + $("#slider-range").slider("values", 1));
-    }
     
-
-    /*-----------------------
-       cart-plus-minus-button 
-     -------------------------*/
-     $(".cart-plus-minus").append('<div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>');
-     $(".qtybutton").on("click", function() {
-         var $button = $(this);
-         var oldValue = $button.parent().find("input").val();
-         if ($button.text() == "+") {
-             var newVal = parseFloat(oldValue) + 1;
-         } else {
-             // Don't allow decrementing below zero
-             if (oldValue > 0) {
-                 var newVal = parseFloat(oldValue) - 1;
-             } else {
-                 newVal = 0;
-             }
-         }
-         $button.parent().find("input").val(newVal);
-     });
 
 
      /*------------------------------------------
@@ -901,68 +855,7 @@
 
 
 
-    /*------------------------------------------
-        = CONTACT FORM SUBMISSION
-    -------------------------------------------*/
-    if ($("#contact-form-main").length) {
-        $("#contact-form-main").validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 2
-                },
-
-                email: "required",
-
-                phone: "required",
-
-                adress: "required",
-
-                service: "required",
-
-                guest: "required",
-
-                meal: "required",     
-
-            },
-
-            messages: {
-                name: "Please enter your name",
-                email: "Please enter your email address",
-                phone: "Please enter your phone number",
-                adress: "Please enter your adress",
-                service: "Please select your contact service",
-                guest: "Please select your guest Number",
-                meal: "Please select your Meal Name"
-            },
-
-            submitHandler: function (form) {
-                $.ajax({
-                    type: "POST",
-                    url: "mail-contact.php",
-                    data: $(form).serialize(),
-                    success: function () {
-                        $( "#loader").hide();
-                        $( "#success").slideDown( "slow" );
-                        setTimeout(function() {
-                        $( "#success").slideUp( "slow" );
-                        }, 3000);
-                        form.reset();
-                    },
-                    error: function() {
-                        $( "#loader").hide();
-                        $( "#error").slideDown( "slow" );
-                        setTimeout(function() {
-                        $( "#error").slideUp( "slow" );
-                        }, 3000);
-                    }
-                });
-                return false; // required to block normal submit since you used ajax
-            }
-
-        });
-    }
-
+ 
 
     /*==========================================================================
         WHEN DOCUMENT LOADING
@@ -1012,146 +905,47 @@
     });
      // color-variation
 
-    /*------------------------------------------
-      color toggle
-    -------------------------------------------*/
-    if($(".color-switcher-wrap").length) {
-        var colorToggleBtn = $(".color-toggle-btn");
-        var colorContent = $(".color-switcher-item");
-        var body = $("body");
-
-        colorToggleBtn.on("click", function(e) {
-            colorContent.toggleClass("color-switcher-open");
-            e.stopPropagation();
+    /*==========================================================================
+        Vertical Navigation Scroll Effect
+    ==========================================================================*/
+    $(document).ready(function(){
+        var contentSection = $('.content-section');
+        var navigation = $('nav');
+        
+        //when a nav link is clicked, smooth scroll to the section
+        navigation.on('click', 'a', function(event){
+            event.preventDefault(); //prevents previous event
+            smoothScroll($(this.hash));
         });
-
-        body.on("click", function() {
-            colorContent.removeClass("color-switcher-open");
-        }).find(searchContent).on("click", function(e) {
-            e.stopPropagation();
-        });
-    }
-
-    // color-change
-    $('.color-switcher-wrap ul li.btn').on("click", function(e){
-        e.stopPropagation();
-        $('.color-switcher-wrap ul li.btn').removeClass('active')
-        $(this).addClass('active')
-        let getId = $(this).attr('id')
-
-        $("body").attr('class', '');
-
-        if(getId == 'Button1'){
-            $('body').addClass('color1') 
-            localStorage.setItem('switerColor', 'color1')
-        }else if(getId == 'Button2'){
-            $('body').addClass('color2')
-            localStorage.setItem('switerColor', 'color2')
-        }else if(getId == 'Button3'){
-            $('body').addClass('color3')
-            localStorage.setItem('switerColor', 'color3')
-        }else if(getId == 'Button4'){
-            $('body').addClass('color4')
-            localStorage.setItem('switerColor', 'color4')
-        }else if(getId == 'Button5'){
-            $('body').addClass('color5')
-            localStorage.setItem('switerColor', 'color5')
-        }else if(getId == 'Button6'){
-            $('body').addClass('color6')
-            localStorage.setItem('switerColor', 'color6')
-        }else if(getId == 'Button7'){
-            $('body').addClass('color7')
-            localStorage.setItem('switerColor', 'color7')
-        }else if(getId == 'Button8'){
-            $('body').addClass('color8')
-            localStorage.setItem('switerColor', 'color8')
-        }else if(getId == 'Button9'){
-            $('body').addClass('color9')
-            localStorage.setItem('switerColor', 'color9')
-        }else if(getId == 'Button10'){
-            $('body').addClass('color10')
-            localStorage.setItem('switerColor', 'color10')
-        }else if(getId == 'Button11'){
-            $('body').addClass('color11')
-            localStorage.setItem('switerColor', 'color11')
-        }else if(getId == 'Button12'){
-            $('body').addClass('color12')
-            localStorage.setItem('switerColor', 'color12')
+        
+        //update navigation on scroll...
+        $(window).on('scroll', function(){
+            updateNavigation();
+        })
+        //...and when the page starts
+        updateNavigation();
+        
+        /////FUNCTIONS
+        function updateNavigation(){
+            contentSection.each(function(){
+                var sectionName = $(this).attr('id');
+                var navigationMatch = $('nav a[href="#' + sectionName + '"]');
+                if( ($(this).offset().top - $(window).height()/2 < $(window).scrollTop()) &&
+                      ($(this).offset().top + $(this).height() - $(window).height()/2 > $(window).scrollTop()))
+                    {
+                        navigationMatch.addClass('active-section');
+                    }
+                else {
+                    navigationMatch.removeClass('active-section');
+                }
+            });
+        }
+        function smoothScroll(target){
+            $('body,html').animate({
+                scrollTop: target.offset().top
+            }, 800);
         }
     });
-
-    $(window).on('load', function(){
-        if(localStorage.getItem('switerColor') == 'color1'){
-            $('body').addClass('color1') 
-            $('#Button1').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color2'){
-            $('body').addClass('color2')
-            $('#Button2').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color3'){
-            $('body').addClass('color3')
-            $('#Button3').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color4'){
-            $('body').addClass('color4')
-            $('#Button4').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color5'){
-            $('body').addClass('color5')
-            $('#Button5').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color6'){
-            $('body').addClass('color6')
-            $('#Button6').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color7'){
-            $('body').addClass('color7')
-            $('#Button7').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color8'){
-            $('body').addClass('color8')
-            $('#Button8').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color9'){
-            $('body').addClass('color9')
-            $('#Button9').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color10'){
-            $('body').addClass('color10')
-            $('#Button10').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color11'){
-            $('body').addClass('color11')
-            $('#Button11').addClass('active') 
-        }else if(localStorage.getItem('switerColor') == 'color12'){
-            $('body').addClass('color12')
-            $('#Button12').addClass('active') 
-        }
-
-    })
-
-
-    // login
-
-    $(".reveal6").on('click', function() {
-        var $pwd = $(".pwd6");
-        if ($pwd.attr('type') === 'text') {
-            $pwd.attr('type', 'password');
-        } else {
-            $pwd.attr('type', 'text');
-        }
-    });
-
-
-    $(".reveal3").on('click', function() {
-        var $pwd = $(".pwd2");
-        if ($pwd.attr('type') === 'text') {
-            $pwd.attr('type', 'password');
-        } else {
-            $pwd.attr('type', 'text');
-        }
-    });  
-
-    $(".reveal2").on('click', function() {
-        var $pwd = $(".pwd3");
-        if ($pwd.attr('type') === 'text') {
-            $pwd.attr('type', 'password');
-        } else {
-            $pwd.attr('type', 'text');
-        }
-    });
-
 
 
 
