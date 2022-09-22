@@ -3917,8 +3917,18 @@ img {
   }
 }
 @media (max-width: 991px) {
+  .static-hero-s2 .middle-couple-pic {    
+    width: 375px;
+    height: 330px;
+
+    /* bottom: 50px; */
+  }
+}
+@media (max-width: 699px) {
   .static-hero-s2 .middle-couple-pic {
-    display: none;
+    width: auto;
+    height: 250px;
+    bottom: 34px;;
   }
 }
 .static-hero-s2 .text-grid {
@@ -4495,6 +4505,11 @@ static-hero-s4
 @media (max-width: 767px) {
   .wpo-site-footer .wpo-upper-footer {
     padding: 30px 20px 0;
+  }
+  .wpo-site-footer ul {
+    
+    display: inline-block;
+     
   }
 }
 @media (max-width: 991px) {
